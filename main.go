@@ -6,6 +6,7 @@ import (
 	"github.com/Kajekk/milk-commerce-be/api"
 	"github.com/Kajekk/milk-commerce-be/conf"
 	"github.com/Kajekk/milk-commerce-be/model"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -21,13 +22,29 @@ var ctx context.Context
 func main() {
 	env := os.Getenv("env")
 	version := os.Getenv("version")
-	config := os.Getenv("config")
+	//config := os.Getenv("config")
 
 	setupDB()
 	defer client.Disconnect(ctx)
 	//collection := client.Database("testing").Collection("numbers")
 
 	router := gin.Default()
+
+	//router.Use(cors.New(cors.Config{
+	//	AllowOrigins:     []string{"https://foo.com"},
+	//	AllowMethods:     []string{"PUT", "PATCH"},
+	//	AllowHeaders:     []string{"Origin"},
+	//	ExposeHeaders:    []string{"Content-Length"},
+	//	AllowCredentials: true,
+	//	AllowOriginFunc: func(origin string) bool {
+	//		return origin == "https://github.com"
+	//	},
+	//	MaxAge: 12 * time.Hour,
+	//}))
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	router.Use(cors.New(config))
+
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",

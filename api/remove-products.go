@@ -8,27 +8,18 @@ import (
 	"time"
 )
 
-func CreateProducts(c *gin.Context) {
-	var product model.Product
-	if err := c.ShouldBindJSON(&product); err != nil {
-		c.JSON(500, gin.H{
-			"message": err.Error(),
-		})
-		return
+func RemoveProduct(c *gin.Context) {
+	//TODO Remove products
+	item := model.Product{
+		Name: "asd",
 	}
-	//item := model.Product{
-	//	Name: "qwe",
-	//}
-
-	myItem, err := model.ConvertToBson(product)
+	myItem, err := model.ConvertToBson(item)
 	if err != nil {
 		c.JSON(500, gin.H{
 			"message": err.Error(),
 		})
 		return
 	}
-	myItem["created_time"] = time.Now()
-	myItem["last_updated_time"] = time.Now()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	//time.Sleep(time.Duration(5) * time.Second)

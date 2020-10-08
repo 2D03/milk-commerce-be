@@ -36,7 +36,10 @@ func main() {
 			"version": version,
 		})
 	})
+	router.GET("/product", api.GetProducts)
 	router.POST("/product", api.CreateProducts)
+	router.PUT("/product", api.UpdateProduct)
+	router.DELETE("/product", api.RemoveProduct)
 
 	_ = router.Run(":8000")
 
